@@ -1,0 +1,30 @@
+buildscript {
+    repositories {
+        google()  // Google's Maven repository for Android tools
+        mavenCentral()  // Maven Central repository for other dependencies
+    }
+    dependencies {
+        // Ensure this version matches your Gradle version compatibility
+        classpath 'com.android.tools.build:gradle:7.4.0'  // Android Gradle plugin
+    }
+}
+
+allprojects {
+    repositories {
+        google()  // Google repository for Android-related dependencies
+        mavenCentral()  // Central repository for all dependencies
+    }
+}
+
+rootProject.buildDir = "../build"  // Define the root build directory
+
+subprojects {
+    // Ensure subprojects use the same build directory structure
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    project.evaluationDependsOn(":app")  // Ensure ':app' project is evaluated first
+}
+
+// Clean task to delete build artifacts
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
